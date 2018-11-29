@@ -55,12 +55,12 @@ public class JobData {
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
-     *
+     * <p>
      * For example, searching for employer "Enterprise" will include results
      * with "Enterprise Holdings, Inc".
      *
-     * @param column   Column that should be searched.
-     * @param value Value of the field to search for
+     * @param column Column that should be searched.
+     * @param value  Value of the field to search for
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
@@ -85,35 +85,40 @@ public class JobData {
     }
 //findByValue is similar to findByColumnAndValue, copy/paste code and will modify
 
-    public static ArrayList<HashMap<String, String>> findByValue(String allColumns, String value) {
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
         //load data, if not already loaded
         loadData();
 
 
         ArrayList<HashMap<String, String>> positions = new ArrayList<>();
+        ArrayList<HashMap<String, String>> duplicatePositions = new ArrayList<>();
+
+        for (HashMap<String, String> jobs : allJobs) {
+            for (Map.Entry<String, String> entry : jobs.entrySet()) {
 
 
-        for (HashMap<String, String> row : allJobs) {
-
-            String aValue = row.get(allColumns);
-
-            if (aValue.contains(value)) {
-                //need to check for duplicates here hashset?
+                String aValue = entry.getValue();
+                value = value.toLowerCase();
 
 
-                if (allColumns.toLowerCase().contains(value.toLowerCase())) {
-                    positions.add(row);
 
 
+                if (aValue.toLowerCase().contains(value)) {
+
+                    //need to check for duplicates here hashset?
+                    if (positions.contains(value)) {
+                        duplicatePositions.add(jobs);
+
+                      } else {
+                    positions.add(jobs);
+                }
+                }
             }
-        }
 
 
-    } return positions;
-
-
-    }
+    }return positions;
+}
 
     /**
      * Read in data from a CSV file and store it in a list
