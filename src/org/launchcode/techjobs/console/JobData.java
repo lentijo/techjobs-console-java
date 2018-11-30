@@ -74,7 +74,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            // added toLowerCase() to make the search case insentive
+            // added toLowerCase() to make the search case insensitive
             // if typed java it will make all values lowercase and match
             if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
@@ -92,28 +92,25 @@ public class JobData {
 
 
         ArrayList<HashMap<String, String>> positions = new ArrayList<>();
-        ArrayList<HashMap<String, String>> duplicatePositions = new ArrayList<>();
+
 
         for (HashMap<String, String> jobs : allJobs) {
             for (Map.Entry<String, String> entry : jobs.entrySet()) {
 
 
-                String aValue = entry.getValue();
-                value = value.toLowerCase();
+                String aValue = entry.getValue().toLowerCase();
 
 
 
+                if (aValue.contains(value)) {
 
-                if (aValue.toLowerCase().contains(value)) {
 
-                    //need to check for duplicates here hashset?
-                    if (positions.contains(value)) {
-                        duplicatePositions.add(jobs);
-
-                      } else {
                     positions.add(jobs);
+                    //when finds a duplicate it stops and doesn't add it.
+                    break;
+
                 }
-                }
+
             }
 
 
